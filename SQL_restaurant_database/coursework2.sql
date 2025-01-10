@@ -14,7 +14,7 @@ CREATE Table employee (
 CREATE Table customer (
     customerID INT NOT NULL PRIMARY KEY,
     full_name VARCHAR(50) NOT NULL,
-    phone_num CHAR(11) NOT NULL);
+    phone_num CHAR(11)); /* from reservations */
 
 CREATE Table purchase (
     order_number INT NOT NULL PRIMARY KEY,
@@ -30,7 +30,7 @@ CREATE Table dish (
     dish_name VARCHAR(50) NOT NULL PRIMARY KEY,
     category ENUM('Appetizer','Main course','Dessert'),
     price DECIMAL(4,2) NOT NULL,
-    dish_status ENUM('available','unavailable') NOT NULL DEFAULT 'unavailable' );
+    dish_status ENUM('available','unavailable') NOT NULL DEFAULT 'available' );
 
 CREATE TABLE rating (
     order_number INT NOT NULL,
@@ -42,13 +42,13 @@ CREATE TABLE rating (
 
 /* SECTION 2 - INSERT STATEMENTS */
 
-INSERT INTO employee (employeeID, emp_role, emp_name, salary) VALUES
-(1, 'Head Chef', 'Gordon Ramsay', 85000.00),
+INSERT INTO employee VALUES
+(1, 'Head Chef', 'Gordon Ramsay', 90000.00),
 (2, 'Sous Chef', 'Claire Smith', 60000.00),
 (3, 'Line Cook', 'John Doe', 40000.00),
 (4, 'Line Cook', 'Jane Smith', 41000.00),
 (5, 'Server', 'Emily Davis', 30000.00),
-(6, 'Server', 'Daniel Wilson', 29000.00),
+(6, 'Server', 'Daniel Wilson', 29500.00),
 (7, 'Host', 'Sarah Johnson', 32000.00),
 (8, 'Manager', 'Michael Brown', 70000.00),
 (9, 'Server', 'Sophia Lee', 29500.00),
@@ -59,162 +59,237 @@ INSERT INTO employee (employeeID, emp_role, emp_name, salary) VALUES
 (14, 'Line Cook', 'Anna Roberts', 42000.00),
 (15, 'Manager', 'Henry White', 75000.00);
 
+INSERT INTO dish VALUES
+('Garlic Bread', 'Appetizer', 4.99, 'available'),
+('Chicken Teriyaki', 'Main course', 15.99, 'unavailable'),
+('Grilled Salmon', 'Main course', 18.99, 'available'),
+('Fruit Tart', 'Dessert', 7.99, 'available'),
+('Beef Burger', 'Main course', 14.99, 'available'),
+('Panna Cotta', 'Dessert', 6.50, 'available'),
+('Bruschetta', 'Appetizer', 5.50, 'available'),
+('Ribeye Steak', 'Main course', 22.99, 'available'),
+('Seafood Risotto', 'Main course', 16.99, 'available'),
+('Chicken Wings', 'Appetizer', 7.99, 'available'),
+('Mango Sorbet', 'Dessert', 4.50, 'available'),
+('Margherita Pizza', 'Main course', 11.99, 'available'),
+('Tiramisu', 'Dessert', 6.99, 'unavailable'),
+('Chocolate Cake', 'Dessert', 5.99, 'available'),
+('Caesar Salad', 'Appetizer', 7.99, 'available');
 
-INSERT INTO customer (customerID, full_name, phone_num) VALUES
-(1001, 'Alice Walker', '07123456789'),
-(1002, 'Bob Green', '07111122233'),
-(1003, 'Charlie Brown', '07222233344'),
-(1004, 'Diana Prince', '07333344455'),
-(1005, 'Eve Black', '07444455566'),
-(1006, 'Frank Castle', '07555566677'),
-(1007, 'Grace Hall', '07666677788'),
-(1008, 'Harry Styles', '07777788899'),
-(1009, 'Ivy Adams', '07888899900'),
-(1010, 'Jack Ryan', '07999900011'),
-(1011, 'Kylie White', '07000011122'),
-(1012, 'Liam Neeson', '07100011122'),
-(1013, 'Maya Carter', '07200011122'),
-(1014, 'Nathan Drake', '07300011122'),
-(1015, 'Olivia Parker', '07400011122');
+/* Sample data representing orders and customers over a 4-month period (December 2023- March 2024)*/
 
-
-INSERT INTO dish (dish_name, category, price, dish_status) VALUES
-('Caesar Salad', 'Appetizer', 7.50, 'available'),
-('Garlic Bread', 'Appetizer', 5.00, 'available'),
-('Chicken Alfredo', 'Main course', 15.00, 'available'),
-('Grilled Salmon', 'Main course', 18.50, 'available'),
-('Beef Burger', 'Main course', 12.00, 'available'),
-('Margherita Pizza', 'Main course', 10.00, 'available'),
-('Tiramisu', 'Dessert', 6.50, 'available'),
-('Chocolate Cake', 'Dessert', 5.50, 'available'),
-('Panna Cotta', 'Dessert', 6.00, 'available'),
-('Bruschetta', 'Appetizer', 6.00, 'available'),
-('Ribeye Steak', 'Main course', 22.00, 'unavailable'),
-('Seafood Risotto', 'Main course', 16.50, 'available'),
-('Fruit Tart', 'Dessert', 7.00, 'available'),
-('Chicken Wings', 'Appetizer', 8.00, 'available'),
-('Mango Sorbet', 'Dessert', 4.50, 'available');
+INSERT INTO customer VALUES
+(1, 'Alice Walker', '07123456789'),
+(11, 'Bob Green', '07111122233'),
+(12, 'Charlie Brown', '07222233344'),
+(23, 'Diana Prince', '07333344455'),
+(55, 'Eve Black', '07444455566'),
+(65, 'Frank Castle', '07555566677'),
+(98, 'Grace Hall', '07666677788'),
+(104, 'Harry Styles', '07777788899'),
+(115, 'Liam Neeson', '07100011122'),
+(188, 'Ivy Adams', '07888899900'),
+(208, 'Jack Ryan', '07999900011'),
+(233, 'Kylie White', '07000011122');
 
 
-INSERT INTO purchase (order_number, order_date, order_time, total, customerID, employeeID) VALUES
-(1, 231230, 1808, 45.00, 1001, 5),
-(2, 231230, 1839, 30.00, 1002, 6),
-(3, 231230, 1842, 22.00, 1003, 5),
-(4, 231230, 1901, 50.00, 1004, 5),
-(5, 231230, 1918, 75.00, 1005, 6),
-(6, 231231, 1208, 25.00, 1006, 13),
-(7, 231231, 1212, 40.00, 1007, 9),
-(8, 231231, 1235, 35.00, 1008, 5),
-(9, 231231, 1247, 55.00, 1009, 9),
-(10, 231231, 1308, 60.00, 1010, 13),
-(11, 231231, 1334, 22.50, 1011, 5),
-(12, 231231, 1345, 27.00, 1012, 13),
-(13, 231231, 1401, 48.00, 1013, 5),
-(14, 231231, 1418, 18.00, 1014, 9),
-(15, 231231, 1432, 33.00, 1015, 13);
-(13, 231231, 1503, 48.00, 1013, 5),
-(14, 231231, 1614, 18.00, 1014, 9),
+INSERT INTO purchase VALUES
+(1, 231224, 1808, 145.76, 1, 5),
+(32, 231231, 1020, 30.97, 11, 6),
+(39, 240101, 1242, 22.98, 23, 5),
+(51, 240103, 1958, 150.72, 12, 5),
+(89, 240107, 0918, 25.98, 55, 6),
+(102, 2401014, 1248, 28.98, 12, 13),
+(143, 2401026, 1312, 40.95, 65, 6),
+(179, 240201, 1035, 32.64, 23, 5),
+(201, 240210, 1247, 55.77, 104, 9),
+(255, 240212, 1408, 60.89, 12, 13),
+(300, 240223, 1834, 22.55, 188, 5),
+(358, 240226, 1445, 27.89, 233, 13),
+(402, 240227, 1901, 48.97, 23, 5),
+(487, 240304, 1218, 18.98, 104, 9),
+(554, 240310, 2031, 33.79, 98, 13),
+(618, 240314, 2053, 88.43, 208, 5),
+(701, 240324, 1614, 16.98, 115, 9);
 
-INSERT INTO rating (order_number, rating_value, feedback) VALUES
-(1, 5, 'Excellent service and food!'),
-(2, 4, 'Great experience overall.'),
-(4, 5, 'Amazing staff and delicious dishes.'),
-(5, 4, 'Very satisfied.'),
-(7, 5, 'Perfect dining experience!'),
-(8, 4, 'Good food but a bit noisy.'),
-(9, 5, 'Highly recommend the dessert.'),
-(10, 3, 'Service could be better.'),
-(11, 4, 'Pretty good.'),
-(13, 3, 'Mediocre.'),
-(14, 1, 'Not impressed.'),
+INSERT INTO rating VALUES
+(1, 5, "Emily was amazing, super friendly and made us feel welcome"),
+(32, 4, "Daniel got everything right, no complaints!"),
+(51, 5, "Our server was great, made sure we had everything we needed!"),
+(89, 4, "Service was pretty good, everything came on time."),
+(102, 1, "James was polite and quick, food came fast too :)"),
+(143, 4, "Good service overall, but the place was kinda loud"),
+(179, 5, "Highly recommend. The server was really helpful with the menu"),
+(487, 3, "Sophia was nice but seemed a bit busy. Food took a while"),
+(554, 4, "Pretty good! Server was friendly and checked on us"),
+(618, 3, "Service was ok, but not super family-friendly."),
+(701, 1, "Food was cold and the service wasn't great");
 
                      
-/* SECTION 3 - UPDATE STATEMENTS - The queries must be explained in natural (English) language first, and then followed up by respective statements */
+/* SECTION 3 - UPDATE STATEMENTS */
 
 /* 
-1)  
+1)  set the rating (1) to 5, for order 102
 */
-
-
+UPDATE rating SET rating_value = 5 WHERE order_number = 102;
 
 /*
-2)
+2) give a 5% salary raise to the highest performing server (i.e. taken the most orders)
 */
 
+UPDATE employee
+SET salary = salary * 1.05
+WHERE employeeID = (
+    SELECT employeeID
+    FROM (
+        SELECT employeeID, COUNT(order_number) AS total_orders
+        FROM purchase
+        GROUP BY employeeID
+        ORDER BY total_orders DESC
+        LIMIT 1
+    ) AS top_performer
+);
 
-/* SECTION 4 - SELECT STATEMENTS - The queries must be explained in natural (English) language first, and then followed up by respective SELECTs*/
-
+/* SECTION 4 - SELECT STATEMENTS */
 
 /* 
-1)  
+1)  List each customer's ID, name, and the total amount they have spent.
 */
-select '1)' AS '';
 
-
+SELECT c.customerID, c.full_name, SUM(p.total) AS total_spent
+FROM customer c
+JOIN purchase p ON c.customerID = p.customerID
+GROUP BY c.customerID, c.full_name
+ORDER BY total_spent DESC;
 
 /* 
-2)  
+2)  List all available non-vegetarian main course items
 */
-select '2)' AS '';
 
-
-
+SELECT * FROM dish
+WHERE category = 'Main course' AND dish_status = 'available'
+AND (dish_name LIKE '%chicken%'
+  OR dish_name LIKE '%beef%'
+  OR dish_name LIKE '%salmon%'
+  OR dish_name LIKE '%steak%');
 
 /* 
-3)  
+3)  Find the names of all the regulars, alongside the number of their visits and total amount spent  
 */
-select '3)' AS '';
 
-
+SELECT 
+    full_name, 
+    COUNT(p.order_number) AS num_orders,
+    SUM(p.total) AS total_spent
+FROM customer c
+JOIN purchase p ON c.customerID = p.customerID
+GROUP BY c.customerID
+HAVING COUNT(p.order_number) > 1;
 
 /* 
-4)  
+4)  List all severs that have a rating assigned to them and the averages of all their ratings
 */
-select '4)' AS '';
 
-
-
+SELECT 
+    e.employeeID AS serverID, 
+    e.emp_name AS name, 
+    AVG(r.rating_value) AS avg_rating
+FROM employee e
+JOIN purchase p ON e.employeeID = p.employeeID
+JOIN rating r ON p.order_number = r.order_number
+GROUP BY e.employeeID, e.emp_name
+HAVING AVG(r.rating_value) IS NOT NULL;
 
 /* 
-5)  
+5)  List the servers who served at least one order during dinner time (6pm-9pm) in January 2024
 */
-select '5)' AS '';
 
-
+SELECT
+    emp_name, employeeID
+FROM employee e
+WHERE EXISTS (  SELECT order_time
+                FROM purchase p
+                WHERE e.employeeID = p.employeeID
+                AND order_time BETWEEN 1800 AND 2100
+                AND order_date BETWEEN 240101 AND 240131 );
 
 /* 
-6)  
+6)  List customers who gave poor ratings (1 or 2) and have a valid phone number
 */
-select '6)' AS '';
 
+SELECT c.customerID, c.full_name, c.phone_num
+FROM customer c
+JOIN purchase p ON c.customerID = p.customerID
+JOIN rating r ON p.order_number = r.order_number
+WHERE r.rating_value BETWEEN 1 AND 2
+AND c.phone_num IS NOT NULL;
 
 /* 
-7)  
+7)  Categorises customers based on their behaviour: those with high-spending orders (total >100) 
+    and those who give low ratings (rating_value ≤ 2)
 */
-select '7)' AS '';
 
-
+SELECT c.customerID, c.full_name, 'High Spender' AS behaviour
+FROM customer c
+JOIN purchase p ON c.customerID = p.customerID
+WHERE p.total > 100
+UNION
+SELECT c.customerID, c.full_name, 'Low Rating Giver' AS behaviour
+FROM customer c
+JOIN purchase p ON c.customerID = p.customerID
+JOIN rating r ON p.order_number = r.order_number
+WHERE r.rating_value <= 2;
 
 /* 
-8)  
+8) List the number of orders placed during different meal times (breakfast, brunch, lunch, dinner)
 */
-select '8)' AS '';
 
+SELECT 
+    meal_time,
+    COUNT(*) AS num_orders
+FROM(
+    SELECT 
+        CASE
+            WHEN order_time BETWEEN 600 AND 1030 THEN 'Breakfast'
+            WHEN order_time BETWEEN 1031 AND 1130 THEN 'Brunch'
+            WHEN order_time BETWEEN 1131 AND 1600 THEN 'Lunch'
+            WHEN order_time BETWEEN 1601 AND 2200 THEN 'Dinner'
+            ELSE 'Other'
+        END AS meal_time
+    FROM purchase
+)AS subquery
+GROUP BY meal_time
+ORDER BY num_orders DESC;
 
-
-/* SECTION 5 - DELETE ROWS - The queries must be explained in natural (English) language first, and then followed up by respective statements */
+/* SECTION 5 - DELETE ROWS */
 
 /*
-1)
+1) Delete all rows from the rating table for orders placed by customers who don't have a phone number recorded
 */
+
+DELETE FROM rating
+WHERE order_number IN (
+    SELECT order_number
+    FROM purchase
+    WHERE customerID IN (
+        SELECT customerID
+        FROM customer
+        WHERE phone_num IS NULL
+    )
+);
 
 /*
-2)
+2) Delete all unavailable dishes
 */
 
+DELETE FROM dish WHERE dish_status = 'unavailable';
 
 /* SECTION 6 - DROP TABLES */
 
-
+DROP TABLE rating;
+DROP TABLE purchase;
+DROP TABLE dish;
+DROP TABLE employee;
+DROP TABLE customer;
 
 SHOW TABLES;
