@@ -44,20 +44,20 @@ CREATE TABLE rating (
 
 INSERT INTO employee VALUES
 (1, 'Head Chef', 'Gordon Ramsay', 90000.00),
-(2, 'Sous Chef', 'Claire Smith', 60000.00),
-(3, 'Line Cook', 'John Doe', 40000.00),
-(4, 'Line Cook', 'Jane Smith', 41000.00),
+(2, 'Sous Chef', 'Rita Oconnel', 60000.00),
+(3, 'Line Cook', 'Lochlan Barrett', 40000.00),
+(4, 'Line Cook', 'Farid Chouder', 41000.00),
 (5, 'Server', 'Emily Davis', 30000.00),
-(6, 'Server', 'Daniel Wilson', 29500.00),
-(7, 'Host', 'Sarah Johnson', 32000.00),
+(6, 'Server', 'Daniel Powers', 29500.00),
+(7, 'Host', 'Sarah Thorley', 32000.00),
 (8, 'Manager', 'Michael Brown', 70000.00),
-(9, 'Server', 'Sophia Lee', 29500.00),
+(9, 'Server', 'Sophia Larkins', 29500.00),
 (10, 'Sous Chef', 'Chris Taylor', 58000.00),
-(11, 'Head Chef', 'Julia Child', 90000.00),
+(11, 'Head Chef', 'Hana Meitah', 90000.00),
 (12, 'Host', 'Olivia Martin', 33000.00),
-(13, 'Server', 'James Anderson', 31000.00),
-(14, 'Line Cook', 'Anna Roberts', 42000.00),
-(15, 'Manager', 'Henry White', 75000.00);
+(13, 'Server', 'James Green', 31000.00),
+(14, 'Line Cook', 'Anna Tapia', 42000.00),
+(15, 'Manager', 'Henry Vasquez', 75000.00);
 
 INSERT INTO dish VALUES
 ('Garlic Bread', 'Appetizer', 4.99, 'available'),
@@ -68,7 +68,7 @@ INSERT INTO dish VALUES
 ('Panna Cotta', 'Dessert', 6.50, 'available'),
 ('Bruschetta', 'Appetizer', 5.50, 'available'),
 ('Ribeye Steak', 'Main course', 22.99, 'available'),
-('Seafood Risotto', 'Main course', 16.99, 'available'),
+('Mushroom Risotto', 'Main course', 16.99, 'available'),
 ('Chicken Wings', 'Appetizer', 7.99, 'available'),
 ('Mango Sorbet', 'Dessert', 4.50, 'available'),
 ('Margherita Pizza', 'Main course', 11.99, 'available'),
@@ -79,18 +79,18 @@ INSERT INTO dish VALUES
 /* Sample data representing orders and customers over a 4-month period (December 2023- March 2024)*/
 
 INSERT INTO customer VALUES
-(1, 'Alice Walker', '07123456789'),
-(11, 'Bob Green', '07111122233'),
+(1, 'Alice Towner', '07123456789'),
+(11, 'Bob Green', NULL),
 (12, 'Charlie Brown', '07222233344'),
-(23, 'Diana Prince', '07333344455'),
-(55, 'Eve Black', '07444455566'),
-(65, 'Frank Castle', '07555566677'),
-(98, 'Grace Hall', '07666677788'),
-(104, 'Harry Styles', '07777788899'),
-(115, 'Liam Neeson', '07100011122'),
-(188, 'Ivy Adams', '07888899900'),
-(208, 'Jack Ryan', '07999900011'),
-(233, 'Kylie White', '07000011122');
+(23, 'Esha Khan', '07333344455'),
+(55, 'Georgia Black', NULL),
+(65, 'Frankie Hawkins', NULL),
+(98, 'Grace Smith', '07666677788'),
+(104, 'Ellie Holland', NULL),
+(115, 'Dennis Craigs', '07100011122'),
+(188, 'Laura Adams', '07888899900'),
+(208, 'Mabel Tapia', NULL),
+(233, 'Kylie Lee', NULL);
 
 
 INSERT INTO purchase VALUES
@@ -102,9 +102,9 @@ INSERT INTO purchase VALUES
 (102, 2401014, 1248, 28.98, 12, 13),
 (143, 2401026, 1312, 40.95, 65, 6),
 (179, 240201, 1035, 32.64, 23, 5),
-(201, 240210, 1247, 55.77, 104, 9),
+(201, 240210, 1247, 55.77, 104, 5),
 (255, 240212, 1408, 60.89, 12, 13),
-(300, 240223, 1834, 22.55, 188, 5),
+(300, 240223, 1834, 22.55, 188, 9),
 (358, 240226, 1445, 27.89, 233, 13),
 (402, 240227, 1901, 48.97, 23, 5),
 (487, 240304, 1218, 18.98, 104, 9),
@@ -116,10 +116,11 @@ INSERT INTO rating VALUES
 (1, 5, "Emily was amazing, super friendly and made us feel welcome"),
 (32, 4, "Daniel got everything right, no complaints!"),
 (51, 5, "Our server was great, made sure we had everything we needed!"),
-(89, 4, "Service was pretty good, everything came on time."),
+(89, 1, "We waited ages to get seated, and the server never apologized."),
 (102, 1, "James was polite and quick, food came fast too :)"),
 (143, 4, "Good service overall, but the place was kinda loud"),
 (179, 5, "Highly recommend. The server was really helpful with the menu"),
+(300, 2, "The server kept mixing up orders, and we had to correct her a few times"),
 (487, 3, "Sophia was nice but seemed a bit busy. Food took a while"),
 (554, 4, "Pretty good! Server was friendly and checked on us"),
 (618, 3, "Service was ok, but not super family-friendly."),
