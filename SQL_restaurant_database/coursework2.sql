@@ -129,14 +129,10 @@ INSERT INTO rating VALUES
                      
 /* SECTION 3 - UPDATE STATEMENTS */
 
-/* 
-1)  set the rating (1) to 5, for order 102
-*/
+/* 1)  set the rating (1) to 5, for order 102 */
 UPDATE rating SET rating_value = 5 WHERE order_number = 102;
 
-/*
-2) give a 5% salary raise to the highest performing server (i.e. taken the most orders)
-*/
+/* 2) give a 5% salary raise to the highest performing server (i.e. taken the most orders) */
 
 UPDATE employee
 SET salary = salary * 1.05
@@ -153,9 +149,8 @@ WHERE employeeID = (
 
 /* SECTION 4 - SELECT STATEMENTS */
 
-/* 
-1)  List each customer's ID, name, and the total amount they have spent.
-*/
+/* 1)  List each customer's ID, name, and the total amount they have spent. */
+select '1)' AS '';
 
 SELECT c.customerID, full_name, SUM(p.total) AS total_spent
 FROM customer c
@@ -163,9 +158,8 @@ INNER JOIN purchase p ON c.customerID = p.customerID
 GROUP BY c.customerID
 ORDER BY total_spent DESC;
 
-/* 
-2)  List all available vegetarian main course items
-*/
+/* 2)  List all available vegetarian main course items */
+select '2)' AS '';
 
 SELECT * FROM dish
 WHERE category = 'Main course' AND dish_status = 'available'
@@ -174,9 +168,8 @@ AND NOT (dish_name LIKE '%chicken%'
   OR dish_name LIKE '%salmon%'
   OR dish_name LIKE '%steak%');
 
-/* 
-3)  Find the names of all the regulars, alongside the number of their visits and total amount spent  
-*/
+/* 3)  Find the names of all the regulars, alongside the number of their visits and total amount spent  */
+select '3)' AS '';
 
 SELECT 
     full_name AS regular_name, 
@@ -187,9 +180,8 @@ INNER JOIN purchase p ON c.customerID = p.customerID
 GROUP BY c.customerID
 HAVING COUNT(order_number) > 1;
 
-/* 
-4)  List all severs that have a rating assigned to them and the averages of all their ratings
-*/
+/* 4)  List all severs that have a rating assigned to them and the averages of all their ratings*/
+select '4)' AS '';
 
 SELECT 
     e.employeeID AS serverID, 
@@ -200,9 +192,8 @@ INNER JOIN purchase p ON e.employeeID = p.employeeID
 INNER JOIN rating r ON p.order_number = r.order_number
 GROUP BY e.employeeID;
 
-/* 
-5)  List the servers who served at least one order during dinner time (6pm-9pm) in January 2024
-*/
+/* 5)  List the servers who served at least one order during dinner time (6pm-9pm) in January (2024) */
+select '5)' AS '';
 
 SELECT
     employeeID, emp_name AS name
@@ -213,9 +204,8 @@ WHERE EXISTS (  SELECT order_time
                 AND order_time BETWEEN 1800 AND 2100
                 AND order_date BETWEEN 240101 AND 240131 );
 
-/* 
-6)  List customers who gave poor ratings (1 or 2) and have a valid phone number
-*/
+/* 6)  List customers who gave poor ratings (1 or 2) and have a valid phone number */
+select '6)' AS ''; 
 
 SELECT c.customerID, full_name, phone_num
 FROM customer c
@@ -224,10 +214,9 @@ INNER JOIN rating r ON p.order_number = r.order_number
 WHERE rating_value BETWEEN 1 AND 2
 AND phone_num IS NOT NULL;
 
-/* 
-7)  Categorises customers based on their behaviour: those with high-spending orders (total >100) 
-    and those who give low ratings (rating_value ≤ 2)
-*/
+/* 7)  Categorise customers based on their behaviour: those with high-spending orders (total >100) 
+    and those who give low ratings (rating_value ≤ 2) */
+select '7)' AS '';
 
 SELECT c.customerID, c.full_name, 'High Spender' AS behaviour
 FROM customer c
@@ -240,9 +229,8 @@ INNER JOIN purchase p ON c.customerID = p.customerID
 INNER JOIN rating r ON p.order_number = r.order_number
 WHERE r.rating_value <= 2;
 
-/* 
-8) List the number of orders placed during different meal times (breakfast, brunch, lunch, dinner)
-*/
+/* 8) List the number of orders placed during different meal times (breakfast, brunch, lunch, dinner) */
+select '8)' AS '';
 
 SELECT 
     CASE                    
@@ -260,9 +248,8 @@ ORDER BY num_orders DESC;
 
 /* SECTION 5 - DELETE ROWS */
 
-/*
-1) Delete all rows from the rating table for orders placed by customers who don't have a phone number recorded
-*/
+
+/*1) Delete all rows from the rating table for orders placed by customers who don't have a phone number recorded */
 
 DELETE FROM rating
 WHERE order_number IN (
@@ -275,9 +262,8 @@ WHERE order_number IN (
     )
 );
 
-/*
-2) Delete all unavailable dishes
-*/
+
+/*2) Delete all unavailable dishes */
 
 DELETE FROM dish WHERE dish_status = 'unavailable';
 

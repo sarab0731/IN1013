@@ -26,10 +26,8 @@ GROUP BY rt.room_name;
 
 SELECT s2.first_name, s2.surname, sum(bill_total)
 FROM restBill b
-INNER JOIN restStaff s1
-ON b.waiter_no = s1.staff_no
-INNER JOIN restStaff s2
-ON s1.headwaiter = s2.staff_no
+INNER JOIN restStaff s1 ON b.waiter_no = s1.staff_no
+INNER JOIN restStaff s2 ON s1.headwaiter = s2.staff_no
 GROUP BY s2.first_name, s2.surname
 ORDER BY sum(bill_total) desc;
 
