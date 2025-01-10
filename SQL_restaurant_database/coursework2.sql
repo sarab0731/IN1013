@@ -94,23 +94,23 @@ INSERT INTO customer VALUES
 
 
 INSERT INTO purchase VALUES
-(1, 231224, 1808, 145.76, 1, 5),
-(32, 231231, 1020, 30.97, 11, 6),
-(39, 240101, 1242, 22.98, 23, 5),
-(51, 240103, 1958, 150.72, 12, 5),
-(89, 240107, 0918, 25.98, 55, 6),
-(102, 2401014, 1248, 28.98, 12, 13),
-(143, 2401026, 1312, 40.95, 65, 6),
-(179, 240201, 1035, 32.64, 23, 5),
-(201, 240210, 1247, 55.77, 104, 5),
-(255, 240212, 1408, 60.89, 12, 13),
-(300, 240223, 1834, 22.55, 188, 9),
-(358, 240226, 1445, 27.89, 233, 13),
-(402, 240227, 1901, 48.97, 23, 5),
-(487, 240304, 1218, 18.98, 104, 9),
-(554, 240310, 2031, 33.79, 98, 13),
-(618, 240314, 2053, 88.43, 208, 5),
-(701, 240324, 1614, 16.98, 115, 9);
+(1  , 231224, 1808, 145.76, 1  , 5),
+(32 , 231231, 1020, 30.97 , 11 , 6),
+(39 , 240101, 1242, 22.98 , 23 , 5),
+(51 , 240103, 1958, 150.72, 12 , 5),
+(89 , 240107, 0918, 25.98 , 55 , 6),
+(102, 240114, 2048, 28.98 , 12 , 13),
+(143, 240126, 1312, 40.95 , 65 , 6),
+(179, 240201, 1035, 32.64 , 23 , 5),
+(201, 240210, 1247, 55.77 , 104, 5),
+(255, 240212, 1408, 60.89 , 12 , 13),
+(300, 240223, 1834, 22.55 , 188, 9),
+(358, 240226, 1445, 27.89 , 233, 13),
+(402, 240227, 1901, 48.97 , 23 , 5),
+(487, 240304, 1218, 18.98 , 104, 9),
+(554, 240310, 2031, 33.79 , 98 , 13),
+(618, 240314, 2053, 88.43 , 208, 5),
+(701, 240324, 1614, 16.98 , 115, 9);
 
 INSERT INTO rating VALUES
 (1, 5, "Emily was amazing, super friendly and made us feel welcome"),
@@ -157,19 +157,19 @@ WHERE employeeID = (
 1)  List each customer's ID, name, and the total amount they have spent.
 */
 
-SELECT c.customerID, c.full_name, SUM(p.total) AS total_spent
+SELECT c.customerID, full_name, SUM(p.total) AS total_spent
 FROM customer c
-JOIN purchase p ON c.customerID = p.customerID
-GROUP BY c.customerID, c.full_name
+INNER JOIN purchase p ON c.customerID = p.customerID
+GROUP BY c.customerID
 ORDER BY total_spent DESC;
 
 /* 
-2)  List all available non-vegetarian main course items
+2)  List all available vegetarian main course items
 */
 
 SELECT * FROM dish
 WHERE category = 'Main course' AND dish_status = 'available'
-AND (dish_name LIKE '%chicken%'
+AND NOT (dish_name LIKE '%chicken%'
   OR dish_name LIKE '%beef%'
   OR dish_name LIKE '%salmon%'
   OR dish_name LIKE '%steak%');
@@ -179,13 +179,13 @@ AND (dish_name LIKE '%chicken%'
 */
 
 SELECT 
-    full_name, 
+    full_name AS regular_name, 
     COUNT(p.order_number) AS num_orders,
     SUM(p.total) AS total_spent
 FROM customer c
-JOIN purchase p ON c.customerID = p.customerID
+INNER JOIN purchase p ON c.customerID = p.customerID
 GROUP BY c.customerID
-HAVING COUNT(p.order_number) > 1;
+HAVING COUNT(order_number) > 1;
 
 /* 
 4)  List all severs that have a rating assigned to them and the averages of all their ratings
@@ -193,20 +193,19 @@ HAVING COUNT(p.order_number) > 1;
 
 SELECT 
     e.employeeID AS serverID, 
-    e.emp_name AS name, 
-    AVG(r.rating_value) AS avg_rating
+    emp_name AS name, 
+    AVG(rating_value) AS avg_rating
 FROM employee e
-JOIN purchase p ON e.employeeID = p.employeeID
-JOIN rating r ON p.order_number = r.order_number
-GROUP BY e.employeeID, e.emp_name
-HAVING AVG(r.rating_value) IS NOT NULL;
+INNER JOIN purchase p ON e.employeeID = p.employeeID
+INNER JOIN rating r ON p.order_number = r.order_number
+GROUP BY e.employeeID;
 
 /* 
 5)  List the servers who served at least one order during dinner time (6pm-9pm) in January 2024
 */
 
 SELECT
-    emp_name, employeeID
+    employeeID, emp_name AS name
 FROM employee e
 WHERE EXISTS (  SELECT order_time
                 FROM purchase p
@@ -218,12 +217,12 @@ WHERE EXISTS (  SELECT order_time
 6)  List customers who gave poor ratings (1 or 2) and have a valid phone number
 */
 
-SELECT c.customerID, c.full_name, c.phone_num
+SELECT c.customerID, full_name, phone_num
 FROM customer c
-JOIN purchase p ON c.customerID = p.customerID
-JOIN rating r ON p.order_number = r.order_number
-WHERE r.rating_value BETWEEN 1 AND 2
-AND c.phone_num IS NOT NULL;
+INNER JOIN purchase p ON c.customerID = p.customerID
+INNER JOIN rating r ON p.order_number = r.order_number
+WHERE rating_value BETWEEN 1 AND 2
+AND phone_num IS NOT NULL;
 
 /* 
 7)  Categorises customers based on their behaviour: those with high-spending orders (total >100) 
@@ -232,13 +231,13 @@ AND c.phone_num IS NOT NULL;
 
 SELECT c.customerID, c.full_name, 'High Spender' AS behaviour
 FROM customer c
-JOIN purchase p ON c.customerID = p.customerID
+INNER JOIN purchase p ON c.customerID = p.customerID
 WHERE p.total > 100
 UNION
 SELECT c.customerID, c.full_name, 'Low Rating Giver' AS behaviour
 FROM customer c
-JOIN purchase p ON c.customerID = p.customerID
-JOIN rating r ON p.order_number = r.order_number
+INNER JOIN purchase p ON c.customerID = p.customerID
+INNER JOIN rating r ON p.order_number = r.order_number
 WHERE r.rating_value <= 2;
 
 /* 
@@ -246,21 +245,18 @@ WHERE r.rating_value <= 2;
 */
 
 SELECT 
-    meal_time,
+    CASE                    
+        WHEN order_time BETWEEN 0700 AND 1030 THEN 'Breakfast'      /*www.w3schools.com/sql/sql_case.asp*/
+        WHEN order_time BETWEEN 1031 AND 1130 THEN 'Brunch'
+        WHEN order_time BETWEEN 1131 AND 1600 THEN 'Lunch'
+        WHEN order_time BETWEEN 1601 AND 2200 THEN 'Dinner'
+        ELSE 'Other'
+    END AS meal_time,
     COUNT(*) AS num_orders
-FROM(
-    SELECT 
-        CASE
-            WHEN order_time BETWEEN 600 AND 1030 THEN 'Breakfast'
-            WHEN order_time BETWEEN 1031 AND 1130 THEN 'Brunch'
-            WHEN order_time BETWEEN 1131 AND 1600 THEN 'Lunch'
-            WHEN order_time BETWEEN 1601 AND 2200 THEN 'Dinner'
-            ELSE 'Other'
-        END AS meal_time
-    FROM purchase
-)AS subquery
+FROM purchase
 GROUP BY meal_time
 ORDER BY num_orders DESC;
+
 
 /* SECTION 5 - DELETE ROWS */
 
