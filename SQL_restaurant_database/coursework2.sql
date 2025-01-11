@@ -18,7 +18,7 @@ CREATE Table customer (
 
 CREATE Table purchase (
     order_number INT NOT NULL PRIMARY KEY,
-    order_date INT(6) NOT NULL, /*YYMMDD*/
+    order_date DATE NOT NULL,
     order_time INT(4) NOT NULL, /*military time (1:38pm == 1338)*/
     total DECIMAL(7,2) NOT NULL,
     customerID INT NOT NULL,
@@ -94,23 +94,23 @@ INSERT INTO customer VALUES
 
 
 INSERT INTO purchase VALUES
-(1  , 231224, 1808, 145.76, 1  , 5),
-(32 , 231231, 1020, 30.97 , 11 , 6),
-(39 , 240101, 1242, 22.98 , 23 , 5),
-(51 , 240103, 1958, 150.72, 12 , 5),
-(89 , 240107, 0918, 25.98 , 55 , 6),
-(102, 240114, 2048, 28.98 , 12 , 13),
-(143, 240126, 1312, 40.95 , 65 , 6),
-(179, 240201, 1035, 32.64 , 23 , 5),
-(201, 240210, 1247, 55.77 , 104, 5),
-(255, 240212, 1408, 60.89 , 12 , 13),
-(300, 240223, 1834, 22.55 , 188, 9),
-(358, 240226, 1445, 27.89 , 233, 13),
-(402, 240227, 1901, 48.97 , 23 , 5),
-(487, 240304, 1218, 18.98 , 104, 9),
-(554, 240310, 2031, 33.79 , 98 , 13),
-(618, 240314, 2053, 88.43 , 208, 5),
-(701, 240324, 1614, 16.98 , 115, 9);
+(1  , '23-12-24', 1808, 145.76, 1  , 5),
+(32 , '23-12-31', 1020, 30.97 , 11 , 6),
+(39 , '24-01-01', 1242, 22.98 , 23 , 5),
+(51 , '24-01-03', 1958, 150.72, 12 , 5),
+(89 , '24-01-07', 0918, 25.98 , 55 , 6),
+(102, '24-01-14', 2048, 28.98 , 12 , 13),
+(143, '24-01-26', 1312, 40.95 , 65 , 6),
+(179, '24-02-01', 1035, 32.64 , 23 , 5),
+(201, '24-02-10', 1247, 55.77 , 104, 5),
+(255, '24-02-12', 1408, 60.89 , 12 , 13),
+(300, '24-02-23', 1834, 22.55 , 188, 9),
+(358, '24-02-26', 1445, 27.89 , 233, 13),
+(402, '24-02-27', 1901, 48.97 , 23 , 5),
+(487, '24-03-04', 1218, 18.98 , 104, 9),
+(554, '24-03-10', 2031, 33.79 , 98 , 13),
+(618, '24-03-14', 2053, 88.43 , 208, 5),
+(701, '24-03-24', 1614, 16.98 , 115, 9);
 
 INSERT INTO rating VALUES
 (1, 5, "Emily was amazing, super friendly and made us feel welcome"),
@@ -180,7 +180,7 @@ SELECT
     full_name AS regular_name, 
     COUNT(p.order_number) AS num_orders,
     SUM(p.total) AS total_spent,
-    AVG(r.rating_value) AS average_rating
+    AVG(r.rating_value) AS avg_rating_given
 FROM customer c
 INNER JOIN purchase p ON c.customerID = p.customerID
 LEFT JOIN rating r ON p.order_number = r.order_number
@@ -198,12 +198,26 @@ SELECT
 FROM employee e
 INNER JOIN purchase p ON e.employeeID = p.employeeID
 INNER JOIN rating r ON p.order_number = r.order_number
-GROUP BY e.employeeID;
+GROUP BY e.employeeID
+ORDER BY AVG(rating_value) DESC;
 
-/* 5)  */
+/* 5) List the average rating per day of the week */
 select '5)' AS '';
 
-
+SELECT 
+    d.day_of_week,
+    AVG(r.rating_value) AS avg_rating
+FROM 
+    (SELECT 'Monday' AS day_of_week UNION
+     SELECT 'Tuesday' UNION
+     SELECT 'Wednesday' UNION
+     SELECT 'Thursday' UNION
+     SELECT 'Friday' UNION
+     SELECT 'Saturday' UNION
+     SELECT 'Sunday') AS d
+LEFT JOIN purchase p ON DAYNAME(p.order_date) = d.day_of_week
+LEFT JOIN rating r ON p.order_number = r.order_number
+GROUP BY d.day_of_week;
 
 /* 6)  List customers who gave poor ratings (1 or 2) and have a valid phone number */
 select '6)' AS ''; 
